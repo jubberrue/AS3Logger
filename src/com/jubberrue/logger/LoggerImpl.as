@@ -20,7 +20,10 @@
 		private static var loggerRules:Dictionary = new Dictionary();
 		
 		private static var loggers : Array = new Array();
+		private static var defaultLogger:Logger;
+		private static var defaultLoggerId:Class;
 		private var loggingLevel : int = DEBUG;
+		
 		
 		init();
 		private static function init():void{
@@ -42,12 +45,13 @@
 				var logger:Logger;
 				
 				if(id == null){
-					logger = loggers[TraceLogger];
+					logger = getDefaultLogger();
 				}else{
 					logger = loggers[id];
 					
 					if(logger == null){
-						logger = loggers[TraceLogger]
+						logger = getDefaultLogger();
+						logger.error("Log id : " + id + " does not exist");
 					}
 				}
 				
@@ -131,6 +135,35 @@
 		
 		public static function addLogger(key:Object, logger:Logger):void {
 			loggers[key] = logger;
+		}
+		
+		public static function setDefaultLoggerId(logId:Class):void{
+			if(logId != null){
+				defaultLoggerId = logId;
+				defaultLogger = null;
+			}
+			
+		}
+		
+		private static function setDefaultLogger(defLog:Logger):void{
+			defaultLogger  = defLog;
+		}
+		
+		private static function getDefaultLogger():Logger{
+			if(defaultLogger != null){
+				return defaultLogger;
+			}
+			
+			if(defaultLoggerId != null){
+				setDefaultLogger(getLogger(defaultLoggerId));
+			}
+			
+			if(defaultLogger == null){
+				setDefaultLogger(getLogger(TraceLogger));
+			}
+			
+			return defaultLogger;
+			
 		}
 	}
 }
