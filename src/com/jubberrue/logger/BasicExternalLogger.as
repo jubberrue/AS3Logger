@@ -1,4 +1,8 @@
-﻿package com.jubberrue.logger
+﻿/*	Written by Josiah Wong : jo_b_there@hotmail.com
+	
+	Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+*/
+package com.jubberrue.logger
 {
 	
 	import flash.external.ExternalInterface;
