@@ -26,6 +26,7 @@ package com.jubberrue.logger
 		private static var loggers : Array = new Array();
 		private static var defaultLogger:Logger;
 		private static var defaultLoggerId:Class;
+		
 		private var loggingLevel : int = DEBUG;
 		
 		
@@ -41,7 +42,7 @@ package com.jubberrue.logger
 		/*@TODO setup logger selection functionality
 		 * */
 		public static function getLogger(id:Class = null):Logger {
-				if (loggers.length == 0) {
+				if (getLoggerCollectionLength() == 0) {
 					addLogger(BasicExternalLogger, new BasicExternalLogger());
 					addLogger(TraceLogger, new TraceLogger());
 				}
@@ -60,6 +61,15 @@ package com.jubberrue.logger
 				}
 				
 				return logger;
+		}
+		
+		private static function getLoggerCollectionLength():int{
+			var counter:int=0;
+			for(var key:Object in loggers){
+				counter++;
+			}
+			
+			return counter;
 		}
 		
 		final public function debug(msg:String):void {
@@ -159,7 +169,8 @@ package com.jubberrue.logger
 			}
 			
 			if(defaultLoggerId != null){
-				setDefaultLogger(getLogger(defaultLoggerId));
+				var tempLogger:LoggerImpl = new defaultLoggerId() as LoggerImpl;
+				setDefaultLogger(tempLogger);
 			}
 			
 			if(defaultLogger == null){
